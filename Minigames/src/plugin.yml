@@ -1,0 +1,19 @@
+name: Minigames
+version: 2.0.0
+main: me.elgamer.minigames.Main
+description: Core module of the minigames server, handles adding/removing games, main guis and the main lobby.
+depend: [Multiverse-Core]
+api-version: 1.16
+commands:
+    addgame:
+        usage: /<command>
+        description: Adds a new game to the server.
+    removegame:
+        usage: /<command>
+        description: Removes an existing game from the server.
+    addtogui:
+        usage: /<command>
+        description: Adds an existing game to the gui to make it accessible to players.
+    removefromgui:
+        usage: /<command>
+        description: Removes an existing game from the gui.

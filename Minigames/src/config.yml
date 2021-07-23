@@ -1,0 +1,11 @@
+#Database details
+mysql:
+    host:
+    port:
+    database:
+    username:
+    password:
+    
+    table:
+        game:
+        gui:
