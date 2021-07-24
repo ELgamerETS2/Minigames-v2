@@ -23,7 +23,7 @@ public class GuiTable {
 		}
 	}
 	
-	public static void addEntry(int slot, int gameID, String material) {
+	public static boolean addEntry(int slot, int gameID, String material) {
 		
 		Main instance = Main.getInstance();
 
@@ -34,11 +34,71 @@ public class GuiTable {
 			statement.setInt(2, gameID);
 			statement.setString(3, material);
 			statement.executeUpdate();
+			return true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		
+	}
+	
+	public static boolean gameExists(int gameID) {
+
+		Main instance = Main.getInstance();
+
+		try {
+			PreparedStatement statement = instance.getConnection().prepareStatement
+					("SELECT * FROM " + instance.GUI + " WHERE GameID=" + gameID);		
+			ResultSet results = statement.executeQuery();
+						
+			if (results.next()) {		
+				return true;		
+			} else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean slotTaken(int slot) {
+
+		Main instance = Main.getInstance();
+
+		try {
+			PreparedStatement statement = instance.getConnection().prepareStatement
+					("SELECT * FROM " + instance.GUI + " WHERE Slot=" + slot);		
+			ResultSet results = statement.executeQuery();
+						
+			if (results.next()) {		
+				return true;		
+			} else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean removeEntry(int slot) {
+
+		Main instance = Main.getInstance();
+
+		try {
+			PreparedStatement statement = instance.getConnection().prepareStatement
+					("DELETE FROM " + instance.GUI + " WHERE Slot=" + slot);		
+			statement.executeUpdate();
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

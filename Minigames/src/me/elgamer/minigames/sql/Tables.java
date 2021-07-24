@@ -31,7 +31,6 @@ public class Tables {
 			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.GAMES+"` (\n" + 
 					"  `GameID` INT NOT NULL AUTO_INCREMENT,\n" + 
 					"  `GameType` TEXT NOT NULL,\n" + 
-					"  `World` TEXT NOT NULL,\n" +
 					"   PRIMARY KEY (`GameID`))"
 					+	";";
 

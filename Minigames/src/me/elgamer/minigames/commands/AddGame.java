@@ -22,13 +22,13 @@ public class AddGame implements CommandExecutor {
 			
 		}
 		
-		if (args.length < 2) {
-			sender.sendMessage(ChatColor.RED + "/addgame <GameType> <World>");
+		if (args.length < 1) {
+			sender.sendMessage(ChatColor.RED + "/addgame <GameType>");
 			return true;
 		}
 		
-		if (GameTable.addGame(args[0], args[1])) {
-			sender.sendMessage(ChatColor.GREEN + "Game added with name " + args[0] + " in world " + args[1]);
+		if (GameTable.addGame(args[0])) {
+			sender.sendMessage(ChatColor.GREEN + args[0] + " added!");
 		} else {
 			sender.sendMessage(ChatColor.RED + "An error occured");
 		}
@@ -36,7 +36,5 @@ public class AddGame implements CommandExecutor {
 		
 		return true;
 	}
-	
-	
 
 }

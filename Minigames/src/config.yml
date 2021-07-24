@@ -1,4 +1,5 @@
 #Database details
+
 mysql:
     host:
     port:
@@ -9,3 +10,14 @@ mysql:
     table:
         game:
         gui:
+
+#Lobby
+
+spawn:
+    x:
+    y:
+    z:
+    yaw:
+    pitch:
+    
+world:            

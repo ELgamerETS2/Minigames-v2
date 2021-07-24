@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-//import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,47 +15,33 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.elgamer.minigames.commands.AddGame;
+import me.elgamer.minigames.commands.AddToGui;
+import me.elgamer.minigames.commands.RemoveFromGui;
+import me.elgamer.minigames.commands.RemoveGame;
+import me.elgamer.minigames.gui.Menu;
+import me.elgamer.minigames.listeners.JoinEvent;
+import me.elgamer.minigames.listeners.LeaveEvent;
 import me.elgamer.minigames.sql.Tables;
+import me.elgamer.minigames.utilities.Lobby;
+import me.elgamer.minigames.utilities.User;
 import me.elgamer.minigames.utilities.Utils;
 
-/*
-import Minigames.MainLobby;
-import Minigames.minigamesMain;
-import Minigames.Games.Gametype;
-import Minigames.Games.HideAndSeek.HideAndSeekLobby;
-import Minigames.Games.RiverRace.RRSelection;
-import Minigames.Games.RiverRace.RiverRaceLobby;
-import Minigames.commands.HSBJoin;
-import Minigames.commands.HSMap;
-import Minigames.commands.Lobby;
-import Minigames.commands.RRCheck;
-import Minigames.commands.RRGrid;
-import Minigames.commands.RRMap;
-import Minigames.commands.RiverRace;
-import Minigames.commands.Wand;
-import Minigames.gui.HideStatsGUI;
-import Minigames.gui.MenuGUI;
-import Minigames.gui.RiverRaceStatsGUI;
-import Minigames.gui.StatsGUI;
-import Minigames.gui.Utils;
-import Minigames.listeners.InventoryClicked;
-import Minigames.listeners.JoinEvent;
-import Minigames.listeners.PlayerInteract;
-import Minigames.statistics.UpdateCall;
-*/
 public class Main extends JavaPlugin {
 	
-String sql;
-	
+	String sql;	
 	Statement SQL = null; 
 	ResultSet resultSet = null;
+	private Connection connection = null;    
+	boolean bIsConnected;	
+	private String DB_CON;
 	
 	static Main instance;
 	static FileConfiguration config;
 	
+	//MySQL
 	private String HOST;
 	private int PORT;
 	public String Database;
@@ -64,25 +51,21 @@ String sql;
 	public String GAMES;
 	public String GUI;
 	
-	public String MainLobbies;
-	/*
-	public MainLobby MainLobby;
-	public HideAndSeekLobby HSLobby;
-	public RiverRaceLobby RRLobby;
-	*/
-	public Plugin plugin;
+	//Possible game slots in gui
+	public static ArrayList<Integer> slots;
 	
-	private Connection connection = null;
-    
-	boolean bIsConnected;
+	//List of users
+	public static ArrayList<User> users;
 	
-	private String DB_CON;
-	
+	//Hotbar items
 	public ItemStack slot9;
 	public static ItemStack menu;
 	
 	public ItemStack slot8;
 	public static ItemStack stats;
+	
+	//Lobby
+	public static Lobby lobby;
 	
 	@Override
 	public void onEnable()
@@ -111,31 +94,26 @@ String sql;
 			Tables.createTables();
 		}
 		
-		//--------------------------------------
-		//------------Create lobbies------------
-		//--------------------------------------
+		//Setup gui slots list
+		slots = new ArrayList<Integer>(
+			      Arrays.asList(11,12,13,14,15,16,17,
+			    		  20,21,22,23,24,25,26,
+			    		  29,30,31,32,33,34,35));
 		
-		/*
-		MainLobby = new MainLobby(this);
-		//Attempts to load world
-	//	Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mv import " +MainLobby.getWorldName() +" normal");
-		
-		HSLobby = new HideAndSeekLobby(this);
-		RRLobby = new RiverRaceLobby(this);
+		//Create lobby
+		lobby = new Lobby(config);
 		
 		//---------------------------------------
 		//--------------Create GUIs--------------
 		//---------------------------------------
 
-		MenuGUI.initialize();
-		StatsGUI.initialize();
-		HideStatsGUI.initialize();
-		RiverRaceStatsGUI.initialize();
-		*/
+		Menu.initialize();
+		//Stats.initialize();
+		
 		//Create menu item				
 		menu = new ItemStack(Material.EMERALD);
 		ItemMeta meta = menu.getItemMeta();
-		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Minigames Menu");
+		meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Menu");
 		menu.setItemMeta(meta);
 		
 		//1 second timer - updates slot
@@ -177,45 +155,20 @@ String sql;
 		//---------------------------------------
 		//---------------Listeners---------------
 		//---------------------------------------
-		
-		//Create selection tool list
-		/*
-		selections = new ArrayList<RRSelection>();
-		
+
 		//Handles welcome message and gamemode
 		new JoinEvent(this);
-		new PlayerInteract(this);
-		new InventoryClicked(this);
-		new Wand(this);
-		*/
+		new LeaveEvent(this);
+		
 		//--------------------------------------
 		//---------------Commands---------------
 		//--------------------------------------
+
+		getCommand("addgame").setExecutor(new AddGame());
+		getCommand("removegame").setExecutor(new RemoveGame());
+		getCommand("addguientry").setExecutor(new AddToGui());
+		getCommand("removeguientry").setExecutor(new RemoveFromGui());
 		
-		//Handles viewing own stats
-	//	getCommand("mystats").setExecutor(new Mystats());
-		/*
-		//Handles joining hide and seek lobby
-		getCommand("hide").setExecutor(new HSBJoin());
-				
-		//Allows Map-Makers to manage Hide and Seek maps
-		getCommand("hsmap").setExecutor(new HSMap());
-		
-		//Allows Game-Makers to manually start and end River Race games
-		getCommand("rr").setExecutor(new RiverRace());
-		
-		//Allows Map-Makers to manage River Race maps
-		getCommand("rrmap").setExecutor(new RRMap());
-		
-		//Allows Map-Makers to manage River Race start points
-		getCommand("rrgrid").setExecutor(new RRGrid());
-		
-		//Allows Map-Makers to manage River Race checkpoints
-		getCommand("rrcheck").setExecutor(new RRCheck());
-		
-		//Allows devs to manage lobbies
-		getCommand("lobbys").setExecutor(new Lobby());
-		*/
 		//--------------------------------------
 		//-------------Stats Update-------------
 		//--------------------------------------
@@ -339,5 +292,15 @@ String sql;
 			e.printStackTrace();
 		}
 		return connection;
+	}
+	
+	public static User getUser(Player p) {
+		
+		for (User u : users) {			
+			if (u.p.equals(p)) {
+				return u;
+			}			
+		}		
+		return null;				
 	}
 }
