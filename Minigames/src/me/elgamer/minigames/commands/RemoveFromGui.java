@@ -16,18 +16,23 @@ public class RemoveFromGui implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			if (!(p.hasPermission("minigames.removeguientry"))) {
+			if (!(p.hasPermission("minigames.gui.remove"))) {
 				p.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
 				return true;
 			}
 			
 		}
 		
-		if (args.length < 1) {
-			sender.sendMessage(ChatColor.RED + "/removeguientry <Slot>");
+		if (args.length < 2) {
+			sender.sendMessage(ChatColor.RED + "/gui remove <Slot>");
 			return true;
 		}
-					
+			
+		if (!(args[0].equalsIgnoreCase("remove"))) {
+			sender.sendMessage(ChatColor.RED + "/gui remove <Slot>");
+			return true;
+		}
+		
 		int slot;
 		
 		try {

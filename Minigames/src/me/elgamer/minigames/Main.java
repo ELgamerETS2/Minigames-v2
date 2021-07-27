@@ -48,8 +48,7 @@ public class Main extends JavaPlugin {
 	private String USER;
 	private String PASSWORD;
 	
-	public String GAMES;
-	public String GUI;
+	public String Games,Gui,GameLog;
 	
 	//Possible game slots in gui
 	public static ArrayList<Integer> slots;
@@ -68,8 +67,7 @@ public class Main extends JavaPlugin {
 	public static Lobby lobby;
 	
 	@Override
-	public void onEnable()
-	{
+	public void onEnable() {
 		//Config Setup
 		instance = this;
 		config = this.getConfig();
@@ -203,8 +201,9 @@ public class Main extends JavaPlugin {
 		this.USER = config.getString("mysql.username");
 		this.PASSWORD = config.getString("mysql.password");
 		
-		this.GAMES = config.getString("mysql.table.game");
-		this.GUI = config.getString("mysql.table.gui");
+		this.Games = config.getString("mysql.table.game");
+		this.GameLog = config.getString("mysql.table.game_log");
+		this.Gui = config.getString("mysql.table.gui");
 		this.DB_CON = "jdbc:mysql://" + this.HOST + ":" 
 				+ this.PORT + "/" + this.Database + "?&useSSL=false&";
 	}

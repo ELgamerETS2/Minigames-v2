@@ -15,20 +15,25 @@ public class AddGame implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			if (!(p.hasPermission("minigames.addgame"))) {
+			if (!(p.hasPermission("minigames.game.add"))) {
 				p.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
 				return true;
 			}
 			
 		}
 		
-		if (args.length < 1) {
-			sender.sendMessage(ChatColor.RED + "/addgame <GameType>");
+		if (args.length < 2) {
+			sender.sendMessage(ChatColor.RED + "/game add <GameType>");
 			return true;
 		}
 		
-		if (GameTable.addGame(args[0])) {
-			sender.sendMessage(ChatColor.GREEN + args[0] + " added!");
+		if (!(args[0].equalsIgnoreCase("add"))) {
+			sender.sendMessage(ChatColor.RED + "/game add <GameType>");
+			return true;
+		}
+		
+		if (GameTable.addGame(args[1])) {
+			sender.sendMessage(ChatColor.GREEN + args[1] + " added!");
 		} else {
 			sender.sendMessage(ChatColor.RED + "An error occured");
 		}

@@ -27,6 +27,7 @@ public class JoinEvent implements Listener {
 		
 		if (!(u.inLobby)) {
 			u.p.teleport(Main.lobby.spawn);
+			//User.clearEffects(u);
 		}
 
 	}

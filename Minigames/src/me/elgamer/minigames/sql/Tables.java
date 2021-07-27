@@ -16,6 +16,7 @@ public class Tables {
 
 		createGamesTable();
 		createGuiTable();
+		createGameLog();
 		
 	}
 
@@ -28,7 +29,7 @@ public class Tables {
 		try
 		{
 			//Adds a weather pref table
-			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.GAMES+"` (\n" + 
+			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.Games+"` (\n" + 
 					"  `GameID` INT NOT NULL AUTO_INCREMENT,\n" + 
 					"  `GameType` TEXT NOT NULL,\n" + 
 					"   PRIMARY KEY (`GameID`))"
@@ -56,7 +57,7 @@ public class Tables {
 		try
 		{
 			//Adds a weather pref table
-			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.GUI+"` (\n" + 
+			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.Gui+"` (\n" + 
 					"  `Slot` INT NOT NULL AUTO_INCREMENT,\n" + 
 					"  `GameID` INT NOT NULL,\n" + 
 					"  `Material` TEXT NOT NULL,\n" +
@@ -74,6 +75,39 @@ public class Tables {
 		catch (Exception e)
 		{
 			Bukkit.getConsoleSender().sendMessage("[Minigames] [SQL] Error adding Gui Table");
+			e.printStackTrace();
+		}
+	}
+	
+	//Creates games table in database
+	private static void createGameLog()
+	{
+		
+		Main instance = Main.getInstance();
+
+		try
+		{
+			//Adds a weather pref table
+			sql = "CREATE TABLE IF NOT EXISTS `"+ instance.Database+"`.`"+ instance.GameLog+"` (\n" + 
+					"  `ID` INT NOT NULL AUTO_INCREMENT,\n" + 
+					"  `GameID` INT NOT NULL,\n" + 
+					"  `MapID` INT NOT NULL,\n" + 
+					"  `StartTime` BIGINT NOT NULL,\n" +
+					"  `EndTime` BIGINT NOT NULL,\n" +
+					"   PRIMARY KEY (`ID`))"
+					+	";";
+
+			SQL = instance.getConnection().createStatement();
+			
+		}
+		catch (SQLException se)
+		{
+			Bukkit.getConsoleSender().sendMessage("[Minigames] [SQL] SQL Error adding Games Table");
+			se.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			Bukkit.getConsoleSender().sendMessage("[Minigames] [SQL] Error adding Games Table");
 			e.printStackTrace();
 		}
 	}

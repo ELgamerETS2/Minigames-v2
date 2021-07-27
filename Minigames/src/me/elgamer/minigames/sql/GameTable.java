@@ -14,7 +14,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GAMES + " WHERE GameID=" + i);			
+					("SELECT * FROM " + instance.Games + " WHERE GameID=" + i);			
 			ResultSet results = statement.executeQuery();
 						
 			if (results.next()) {		
@@ -35,7 +35,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GAMES + " WHERE GameType=?");		
+					("SELECT * FROM " + instance.Games + " WHERE GameType=?");		
 			statement.setString(1, gameType);
 			ResultSet results = statement.executeQuery();
 						
@@ -57,7 +57,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("INSERT INTO " + instance.GAMES + " (GameID,GameType) VALUE (?,?)");
+					("INSERT INTO " + instance.Games + " (GameID,GameType) VALUE (?,?)");
 			statement.setInt(1, getNewID());
 			statement.setString(2, gameType);
 			statement.executeUpdate();
@@ -77,7 +77,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GAMES);
+					("SELECT * FROM " + instance.Games);
 			ResultSet results = statement.executeQuery();
 
 			if (results.last()) {
@@ -99,7 +99,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GAMES + " WHERE GameType=?");		
+					("SELECT * FROM " + instance.Games + " WHERE GameType=?");		
 			statement.setString(1, gameType);
 			ResultSet results = statement.executeQuery();
 						
@@ -121,7 +121,7 @@ public class GameTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("DELETE FROM " + instance.GAMES + " WHERE GameType=?");		
+					("DELETE FROM " + instance.Games + " WHERE GameType=?");		
 			statement.setString(1, gameType);
 			statement.executeUpdate();
 			return true;

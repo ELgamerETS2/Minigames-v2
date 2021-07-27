@@ -17,21 +17,26 @@ public class AddToGui implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			if (!(p.hasPermission("minigames.addguientry"))) {
+			if (!(p.hasPermission("minigames.gui.add"))) {
 				p.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
 				return true;
 			}
 			
 		}
 		
-		if (args.length < 3) {
-			sender.sendMessage(ChatColor.RED + "/addguientry <GameType> <Slot> <Material>");
+		if (args.length < 4) {
+			sender.sendMessage(ChatColor.RED + "/gui add <GameType> <Slot> <Material>");
+			return true;
+		}
+		
+		if (!(args[0].equalsIgnoreCase("add"))) {
+			sender.sendMessage(ChatColor.RED + "/gui add <GameType> <Slot> <Material>");
 			return true;
 		}
 		
 		int gameID;
-		if (GameTable.gameExists(args[0])) {
-			gameID = GameTable.getID(args[0]);
+		if (GameTable.gameExists(args[1])) {
+			gameID = GameTable.getID(args[1]);
 		} else {
 			sender.sendMessage(ChatColor.RED + "This game does not exist!");
 			return true;
@@ -45,7 +50,7 @@ public class AddToGui implements CommandExecutor {
 		int slot;
 		
 		try {
-			slot = Integer.parseInt(args[1]);
+			slot = Integer.parseInt(args[2]);
 			
 			if (!(Main.slots.contains(slot))) {
 				sender.sendMessage(ChatColor.RED + "This slot cannot be used, it must lie between 11-17, 20-26 or 29-35!");
@@ -53,7 +58,7 @@ public class AddToGui implements CommandExecutor {
 			}
 			
 		} catch (NumberFormatException e) {
-			sender.sendMessage(ChatColor.RED + args[1] + " is not a valid slot number!");
+			sender.sendMessage(ChatColor.RED + args[2] + " is not a valid slot number!");
 			return true;
 		}
 		
@@ -62,8 +67,8 @@ public class AddToGui implements CommandExecutor {
 			return true;
 		}
 		
-		if (GuiTable.addEntry(slot, gameID, args[2])) {
-			sender.sendMessage(ChatColor.GREEN + args[0] + " added to gui in slot " + args[1] + " with material " + args[2] + "!");
+		if (GuiTable.addEntry(slot, gameID, args[3])) {
+			sender.sendMessage(ChatColor.GREEN + args[1] + " added to gui in slot " + args[2] + " with material " + args[3] + "!");
 		} else {
 			sender.sendMessage(ChatColor.RED + "An error occured");
 		}

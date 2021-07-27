@@ -5,15 +5,9 @@ description: Core module of the minigames server, handles adding/removing games,
 depend: [Multiverse-Core]
 api-version: 1.16
 commands:
-    addgame:
+    game:
         usage: /<command>
-        description: Adds a new game to the server.
-    removegame:
+        description: Adds/Removes a game on the server.
+    gui:
         usage: /<command>
-        description: Removes an existing game from the server.
-    addtogui:
-        usage: /<command>
-        description: Adds an existing game to the gui to make it accessible to players.
-    removefromgui:
-        usage: /<command>
-        description: Removes an existing game from the gui.
+        description: Adds/Removes an existing game in the gui to make it accessible to players.

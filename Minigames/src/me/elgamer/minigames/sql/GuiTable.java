@@ -14,7 +14,7 @@ public class GuiTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GUI);
+					("SELECT * FROM " + instance.Gui);
 			return statement.executeQuery();
 
 		} catch (SQLException e) {
@@ -29,7 +29,7 @@ public class GuiTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("INSERT INTO " + instance.GUI + " (Slot,GameID,Material) VALUE (?,?,?)");
+					("INSERT INTO " + instance.Gui + " (Slot,GameID,Material) VALUE (?,?,?)");
 			statement.setInt(1, slot);
 			statement.setInt(2, gameID);
 			statement.setString(3, material);
@@ -49,7 +49,7 @@ public class GuiTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GUI + " WHERE GameID=" + gameID);		
+					("SELECT * FROM " + instance.Gui + " WHERE GameID=" + gameID);		
 			ResultSet results = statement.executeQuery();
 						
 			if (results.next()) {		
@@ -70,7 +70,7 @@ public class GuiTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("SELECT * FROM " + instance.GUI + " WHERE Slot=" + slot);		
+					("SELECT * FROM " + instance.Gui + " WHERE Slot=" + slot);		
 			ResultSet results = statement.executeQuery();
 						
 			if (results.next()) {		
@@ -91,7 +91,7 @@ public class GuiTable {
 
 		try {
 			PreparedStatement statement = instance.getConnection().prepareStatement
-					("DELETE FROM " + instance.GUI + " WHERE Slot=" + slot);		
+					("DELETE FROM " + instance.Gui + " WHERE Slot=" + slot);		
 			statement.executeUpdate();
 			return true;
 			
