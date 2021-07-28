@@ -11,3 +11,6 @@ commands:
     gui:
         usage: /<command>
         description: Adds/Removes an existing game in the gui to make it accessible to players.
+    leave:
+        usage: /<command>
+        description: Teleports the player to the lobby, leaving the game they were in.
