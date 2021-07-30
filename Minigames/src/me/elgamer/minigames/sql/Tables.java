@@ -36,6 +36,7 @@ public class Tables {
 					+	";";
 
 			SQL = instance.getConnection().createStatement();
+			SQL.executeUpdate(sql);
 			
 		}
 		catch (SQLException se)
@@ -65,6 +66,7 @@ public class Tables {
 					+	";";
 
 			SQL = instance.getConnection().createStatement();
+			SQL.executeUpdate(sql);
 			
 		}
 		catch (SQLException se)
@@ -98,6 +100,7 @@ public class Tables {
 					+	";";
 
 			SQL = instance.getConnection().createStatement();
+			SQL.executeUpdate(sql);
 			
 		}
 		catch (SQLException se)

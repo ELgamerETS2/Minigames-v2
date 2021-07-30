@@ -17,13 +17,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.elgamer.minigames.commands.AddGame;
-import me.elgamer.minigames.commands.AddToGui;
-import me.elgamer.minigames.commands.RemoveFromGui;
-import me.elgamer.minigames.commands.RemoveGame;
+import me.elgamer.minigames.commands.Game;
+import me.elgamer.minigames.commands.Gui;
 import me.elgamer.minigames.gui.Menu;
+import me.elgamer.minigames.gui.Stats;
 import me.elgamer.minigames.listeners.JoinEvent;
 import me.elgamer.minigames.listeners.LeaveEvent;
+import me.elgamer.minigames.listeners.PlayerInteract;
 import me.elgamer.minigames.sql.Tables;
 import me.elgamer.minigames.utilities.Lobby;
 import me.elgamer.minigames.utilities.User;
@@ -84,7 +84,7 @@ public class Main extends JavaPlugin {
 		//Test whether database connected
 		if (bSuccess)
 		{
-			Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Minigames] MySQL Connected");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Minigames] MySQL Connected to " + Database);
 			bIsConnected = true;
 			
 			
@@ -98,6 +98,9 @@ public class Main extends JavaPlugin {
 			    		  20,21,22,23,24,25,26,
 			    		  29,30,31,32,33,34,35));
 		
+		//Create users list
+		users = new ArrayList<User>();
+		
 		//Create lobby
 		lobby = new Lobby(config);
 		
@@ -106,7 +109,7 @@ public class Main extends JavaPlugin {
 		//---------------------------------------
 
 		Menu.initialize();
-		//Stats.initialize();
+		Stats.initialize();
 		
 		//Create menu item				
 		menu = new ItemStack(Material.EMERALD);
@@ -157,15 +160,14 @@ public class Main extends JavaPlugin {
 		//Handles welcome message and gamemode
 		new JoinEvent(this);
 		new LeaveEvent(this);
+		new PlayerInteract(this);
 		
 		//--------------------------------------
 		//---------------Commands---------------
 		//--------------------------------------
 
-		getCommand("addgame").setExecutor(new AddGame());
-		getCommand("removegame").setExecutor(new RemoveGame());
-		getCommand("addguientry").setExecutor(new AddToGui());
-		getCommand("removeguientry").setExecutor(new RemoveFromGui());
+		getCommand("game").setExecutor(new Game());
+		getCommand("gui").setExecutor(new Gui());
 		
 		//--------------------------------------
 		//-------------Stats Update-------------
